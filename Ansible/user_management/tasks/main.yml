@@ -1,0 +1,19 @@
+---
+- name: Manage groups
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  loop: "{{ develop_group }}"
+  become: true
+
+- name: Manage users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell | default(omit) }}"
+    password: "{{ item.password | default(omit) }}"
+    groups: "{{ item.groups | default(omit) }}"
+    append: true
+    state: "{{ item.state }}"
+    generate_ssh_key: "{{ item.generate_ssh_key }}"
+  loop: "{{ users }}"
+  become: true

@@ -1,0 +1,36 @@
+server {
+    listen 80;
+    server_name {{ nginx_vhost.server_name }};
+
+    root {{ nginx_vhost.root_dir }};
+    index index.html index.htm;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+    gzip_vary on;
+    gzip_min_length 1000;
+
+    location /images {
+        autoindex on;
+        access_log {{ nginx_vhost.log_dir }}/{{ nginx_vhost.server_name }}_access.log;
+        error_log {{ nginx_vhost.log_dir }}/{{ nginx_vhost.server_name }}_error.log;
+
+        expires 1h;
+        add_header Cache-Control "public, max-age=3600";
+    }
+
+    location /images/filename {
+        root {{ nginx_vhost.root_dir }};
+        try_files $uri =404; # Пытаемся найти изображение по пути, если не нашли — 404
+
+        add_header Content-Type image/svg+xml;
+        access_log {{ nginx_vhost.log_dir }}/{{ nginx_vhost.server_name }}_access.log;
+        error_log {{ nginx_vhost.log_dir }}/{{ nginx_vhost.server_name }}_error.log;
+
+        expires 1h;
+        add_header Cache-Control "public, max-age=3600";
+    }
+
+    access_log {{ nginx_vhost.log_dir }}/{{ nginx_vhost.server_name }}_access.log;
+    error_log {{ nginx_vhost.log_dir }}/{{ nginx_vhost.server_name }}_error.log;
+}

@@ -1,0 +1,6 @@
+nginx_vhost:
+  server_name: "alexander-shuld.com"
+  root_dir: "/var/www/html"
+  log_dir: "/var/log/nginx"
+  cache_time: "1h"
+  image_location: "/images"

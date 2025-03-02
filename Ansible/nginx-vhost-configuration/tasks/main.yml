@@ -1,0 +1,29 @@
+---
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Create log directory
+  file:
+    path: "{{ nginx_vhost.log_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Create vhost config
+  template:
+    src: vhost.conf.j2
+    dest: "/etc/nginx/sites-available/{{ nginx_vhost.server_name }}"
+    mode: 0644
+
+- name: Enable vhost
+  file:
+    src: "/etc/nginx/sites-available/{{ nginx_vhost.server_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ nginx_vhost.server_name }}"
+    state: link
+
+- name: Restart Nginx with retries
+  ansible.builtin.sysvinit:
+    name: nginx
+    state: restarted

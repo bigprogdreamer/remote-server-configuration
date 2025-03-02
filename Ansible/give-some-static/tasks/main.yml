@@ -1,0 +1,24 @@
+---
+- name: Create images directory
+  file:
+    path: "{{ static_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Download static files (SVG images)
+  get_url:
+    url: "{{ static_url }}"
+    dest: "/tmp/{{ static_archive }}"
+    mode: '0644'
+
+- name: Extract static files (SVG images)
+  unarchive:
+    src: "/tmp/{{ static_archive }}"
+    dest: "{{ static_dir }}"
+    remote_src: yes
+    creates: "{{ static_dir }}/index.html"
+
+- name: Clean up static archive
+  file:
+    path: "/tmp/{{ static_archive }}"
+    state: absent

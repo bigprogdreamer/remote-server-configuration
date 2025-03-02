@@ -1,0 +1,10 @@
+- hosts: all
+  become: yes
+  become_method: enable
+  roles:
+    - user_management
+    - install-zsh
+    - ssh-configure
+    - package-installer
+    - nginx-vhost-configuration
+    - give-some-static

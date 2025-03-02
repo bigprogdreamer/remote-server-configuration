@@ -1,0 +1,9 @@
+---
+# vars file for package-installer
+tools_to_install:
+  - htop
+  - ncdu
+  - git
+  - nano
+  - unzip
+

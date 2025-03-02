@@ -1,0 +1,24 @@
+- name: Install zsh and curl
+  ansible.builtin.package:
+    name:
+      - zsh
+      - curl
+      - git
+    state: present
+
+- name: Users with zsh
+  command: getent passwd
+  register: users_list
+
+- name: Filter zsh
+  set_fact:
+    users_with_zsh: "{{ users_list.stdout_lines | select('search', '/bin/zsh$') | map('split', ':') | map('first') | list }}"
+
+- name: Install oh my zsh for users with zsh
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "/home/{{ item }}/.oh-my-zsh"
+    version: master
+  with_items: "{{ users_with_zsh }}"
+  when: users_with_zsh | length > 0
+

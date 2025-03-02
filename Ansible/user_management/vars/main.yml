@@ -1,0 +1,26 @@
+---
+develop_group:
+  - name: "developers"
+    state: "present"
+  - name: "admins"
+    state: "present"
+  - name: "users"
+    state: "present"
+
+users:
+  - name: "alex"
+    shell: "/bin/bash"
+    state: "present"
+    generate_ssh_key: "true"
+    password: "$6$1BBnN7jX5BRLeUVu$C8ywXTIF5niUOAz6G2058WRW47hawDSnSzYbDUtVrytUod/AuBAEC09DCBPXuYmy4Id712cwmjB1x5ppd1Xk4."
+    groups:
+      - "developers"
+      - "admins"
+  - name: "gambler228"
+    shell: "/bin/zsh"
+    state: "present"
+    generate_ssh_key: "false"
+    password: "$6$ulKvl327ivTLcysL$YqOz0gfTC91C7NH0OG3KEPLY80.fq6EUCFWL4Avqm/hqv.vRs/psjOKVcjeTweeJ./3V1aIJIiZkzHpvMgs3H0"
+    groups:
+      - "users"
+
